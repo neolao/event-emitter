@@ -1,5 +1,5 @@
 import chai from "chai"
-import EventEmitter from "../lib/EventEmitter"
+import EventEmitter from "../src/EventEmitter"
 
 const expect = chai.expect;
 const should = chai.should;
@@ -39,6 +39,21 @@ describe("EventEmitter", () => {
      * Test "emit()" method
      */
     describe("#emit()", () => {
+        /**
+         * Do not add listener
+         */
+        it("should do nothing if there is not listener", function *() {
+            let emitter = new EventEmitter;
+            let called = false;
+
+            // Emit event
+            yield emitter.emit("foo");
+
+            // Test
+            expect(called).to.be.false;
+
+        });
+
         /**
          * Add 1 listener
          */
@@ -144,11 +159,48 @@ describe("EventEmitter", () => {
                 collected.push("a");
             }, {priority: 2});
 
+            // Add third listener
+            emitter.on("foo", function *() {
+                collected.push("c");
+            }, {priority: -1});
+
             // Emit event
             yield emitter.emit("foo");
 
             // Test
-            expect(collected).to.deep.equal(["a", "b"]);
+            expect(collected).to.deep.equal(["a", "b", "c"]);
+        });
+
+        /**
+         * Continue if some listeners fail
+         */
+        it("should call all listeners even if some listeners fail", function *() {
+            let emitter = new EventEmitter;
+            let errorCount = 0;
+            let successCount = 0;
+
+            // Add listeners
+            emitter.on("foo", function *() {
+                errorCount++;
+                throw new Error("a");
+            });
+            emitter.on("foo", function *() {
+                successCount++;
+            });
+            emitter.on("foo", function *() {
+                errorCount++;
+                throw new Error("b");
+            });
+            emitter.on("foo", function *() {
+                successCount++;
+            });
+
+            // Emit event
+            yield emitter.emit("foo");
+
+            // Test
+            expect(errorCount).to.equal(2);
+            expect(successCount).to.equal(2);
         });
     });
 });

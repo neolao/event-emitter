@@ -1,7 +1,7 @@
 {
     "name": "event-emitter-generator",
     "description": "Event emitter written with generators",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "author": "neolao <contact@neolao.com>",
     "private": false,
     "repository": "https://github.com/neolao/event-emitter.git",

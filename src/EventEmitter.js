@@ -173,7 +173,11 @@ export default class EventEmitter
         const listeners:Array<Listener> = this[_getEventListeners](name);
 
         for (let listener:Listener of listeners) {
-            yield this[_executeEventListener](listener, args);
+            try {
+                yield this[_executeEventListener](listener, args);
+            } catch (error) {
+                yield this.emit("error", error);
+            }
         }
     }
 
