@@ -37,7 +37,7 @@
         "flow-stop": "flow stop",
         "flow-start": "flow start",
         "flow-restart": "flow stop && flow start",
-        "prepare": "npm run build && npm test",
+        "prepare": "npm run build",
         "lint": "eslint --ext .js src",
         "test": "mocha --harmony --compilers js:babel-core/register --require co-mocha --recursive --reporter spec --bail",
         "coverage": "nyc npm test",
