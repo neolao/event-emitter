@@ -1,0 +1,63 @@
+{
+    "name": "event-emitter-generator",
+    "description": "Event emitter written with generators",
+    "version": "1.0.0",
+    "author": "neolao <contact@neolao.com>",
+    "private": false,
+    "repository": "https://github.com/neolao/event-emitter.git",
+    "license": "MIT",
+    "keywords": [
+        "event",
+        "emitter",
+        "generator"
+    ],
+    "files": [
+        "lib",
+        "src"
+    ],
+    "main": "lib/EventEmitter.js",
+    "engines": {
+        "node": ">= 5"
+    },
+    "devDependencies": {
+        "babel-cli": "^6.7",
+        "babel-preset-solfege": "^1.0",
+        "chai": "^4.0",
+        "co-mocha": "^1.2",
+        "coveralls": "^2.13.1",
+        "eslint": "^4.0",
+        "eslint-plugin-solfege": "^1.0",
+        "flow-bin": "^0.49.1",
+        "gnomon": "^1.5.0",
+        "mocha": "^3.3",
+        "nyc": "^11.0",
+        "watch": "^1.0.2"
+    },
+    "scripts": {
+        "flow-stop": "flow stop",
+        "flow-start": "flow start",
+        "flow-restart": "flow stop && flow start",
+        "prepare": "npm run build && npm test",
+        "lint": "eslint --ext .js src",
+        "test": "mocha --harmony --compilers js:babel-core/register --require co-mocha --recursive --reporter spec --bail",
+        "coverage": "nyc npm test",
+        "coveralls": "nyc npm test && nyc report --reporter=text-lcov | coveralls",
+        "prebuild": "npm run lint && npm run flow-restart && flow",
+        "postbuild": "npm test",
+        "build": "babel --out-dir lib src --copy-files",
+        "watch": "watch 'echo \"----------\"; npm run build --silent | gnomon' ./src"
+    },
+    "babel": {
+        "presets": [
+            "solfege"
+        ],
+        "comments": false,
+        "plugins": []
+    },
+    "eslintConfig": {
+        "extends": [
+            "eslint:recommended",
+            "plugin:solfege/recommended"
+        ]
+    }
+}
